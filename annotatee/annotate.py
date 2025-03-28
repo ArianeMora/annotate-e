@@ -19,21 +19,16 @@
 Author: Ariane Mora
 Date: September 2024
 """
-from enzymetk import *
-import argparse
+from enzymetk import BLAST, Save
+import pandas as pd
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Run on a dataframe")
-    parser.add_argument('-out', '--out', required=True, help='Path to the output directory')
-    parser.add_argument('-df', '--df', type=str, required=True, help='Fasta of the file of interest')
-    return parser.parse_args()
+def run(input_file: str, id_col: str, seq_col: str):
+    # First run BLAST and see if there are homologous sequences
+    df = pd.read_csv(input_file)
+    df << (BLAST(id_col, seq_col) >> Save('tmp/blast_test.pkl'))
+    # After this we summarize the file
+    df = pd.read_pickle('tmp/blast_test.pkl')
+    # Summarize it and keep only the first one
+    
 
-
-def main():
-    args = parse_args()
-    #run(args.out, args.df)
-
-
-if __name__ == "__main__":
-    main()
