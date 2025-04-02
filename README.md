@@ -2,6 +2,13 @@
 
 Annotator for enzymes using an ensemble of tools.
 
+## Install:
+
+``` pip install annotatee```
+
+## Run:
+
+``` annotatee 
 ## Setup:
 Download sequences for your database or use ours. 
 

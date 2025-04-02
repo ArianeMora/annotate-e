@@ -31,10 +31,6 @@ from enzymetk.sequence_search_blast import BLAST
 from enzymetk.similarity_foldseek_step import FoldSeek
 from enzymetk.annotateEC_proteinfer_step import ProteInfer
 from enzymetk.annotateEC_CLEAN_step import CLEAN
-from enzymetk.save_step import Save
-from tqdm import tqdm
-import numpy as np
-from multiprocessing.dummy import Pool as ThreadPool
 from sciutil import SciUtil
 import subprocess
 import timeit
@@ -45,6 +41,21 @@ u = SciUtil()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 u = SciUtil()
+
+
+def fasta_to_df(fasta):
+    rows = []
+    records = list(SeqIO.parse(fasta, "fasta"))
+    done_records = []
+    # Remove all the ids
+    for record in records:
+        new_id = re.sub('[^0-9a-zA-Z]+', '', record.id)
+        if new_id not in done_records:
+            rows.append([new_id, record.seq])
+        else:
+            u.warn_p(['Had a duplicate record! Only keeping the first entry, duplicate ID:', record.id])
+    df = pd.DataFrame(rows, columns=['id', 'seq'])
+    return df
 
 
 def run(cmd: list) -> None:
@@ -82,8 +93,8 @@ def run_blast(run_name, input_df, id_col, seq_col, output_folder, database, run_
     return input_df
 
     
-def run_proteinfer(run_name, input_df, id_col, seq_col, output_folder, run_method, keep_dups=False, args_proteinfer=None):
-    proteinfer_df = (input_df << (ProteInfer(id_col, seq_col, proteinfer_dir='/disk1/ariane/vscode/enzyme-tk/enzymetk/conda_envs/proteinfer/')))
+def run_proteinfer(run_name, input_df, id_col, seq_col, output_folder, run_method, proteinfer_dir, keep_dups=False, args_proteinfer=None):
+    proteinfer_df = (input_df << (ProteInfer(id_col, seq_col, proteinfer_dir=proteinfer_dir)))
     proteinfer_df.sort_values(by='confidence', ascending=False, inplace=True)
     # Check if they want to retain the duplicate IDs
     if not keep_dups:
@@ -148,8 +159,8 @@ def run_foldseek(run_name: str, input_df: pd.DataFrame, id_col: str, seq_col: st
     
     return input_df
     
-def run_clean(run_name: str, input_df: pd.DataFrame, id_col: str, seq_col: str, output_folder: str, keep_dups, args_clean=None) -> pd.DataFrame:
-    clean_dir = '/disk1/share/software/CLEAN/app/'
+def run_clean(run_name: str, input_df: pd.DataFrame, id_col: str, seq_col: str, output_folder: str, clean_dir: str, keep_dups: bool, 
+              args_clean=None) -> pd.DataFrame:
     clean_df = (input_df << (CLEAN(id_col, seq_col, clean_dir, num_threads=1)))
     rows = []
     for values in clean_df.values:
@@ -172,7 +183,8 @@ def run_clean(run_name: str, input_df: pd.DataFrame, id_col: str, seq_col: str, 
     return input_df    
 
 def pipeline(run_name: str, input_df: pd.DataFrame, id_col: str, seq_col: str, output_folder: str, database: str, 
-             run_method: str, keep_dups=False, args_blast=None, args_foldseek=None, args_proteinfer=None, args_clean=None, 
+             clean_dir: str, proteinfer_dir: str, run_method='complete', keep_dups=False, args_blast=None, 
+             args_foldseek=None, args_proteinfer=None, args_clean=None, 
              methods=None, foldseek_db=None):
     """ 
     By default run all methods but otherwise select only those based on the 
@@ -223,7 +235,8 @@ def pipeline(run_name: str, input_df: pd.DataFrame, id_col: str, seq_col: str, o
             if len(input_df) > 0:
                 # def run_proteinfer(run_name, input_df, id_col, seq_col, output_folder, run_method, keep_dups=False, args_proteinfer=None):
 
-                input_df = run_proteinfer(run_name, input_df, id_col, seq_col, output_folder, run_method, keep_dups, args_proteinfer=args_proteinfer)
+                input_df = run_proteinfer(run_name, input_df, id_col, seq_col, output_folder, run_method, proteinfer_dir, 
+                                          keep_dups, args_proteinfer=args_proteinfer)
         except Exception as e:
             u.dp([f'Error with ProteInfer: {e}'])
             u.dp([f'Continuing with CLEAN'])
@@ -232,7 +245,7 @@ def pipeline(run_name: str, input_df: pd.DataFrame, id_col: str, seq_col: str, o
     if not methods or 'clean' in methods:
         try:   
             if len(input_df) > 0:
-                input_df = run_clean(run_name, input_df, id_col, seq_col, output_folder, args_clean)
+                input_df = run_clean(run_name, input_df, id_col, seq_col, output_folder, clean_dir, keep_dups=keep_dups, args_clean=args_clean)
         except Exception as e:
             u.dp([f'Error with CLEAN: {e}'])
         
