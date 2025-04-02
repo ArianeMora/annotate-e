@@ -103,6 +103,7 @@ def execute(df: pd.DataFrame, output_folder: str) -> pd.DataFrame:
     first_chunksize = len(df)/(num_threads * 1000)
     
     df_chunks = np.array_split(df, first_chunksize)
+    cj = 0
     for df in tqdm(df_chunks):
         if num_threads > 1:
             data = []
@@ -111,10 +112,10 @@ def execute(df: pd.DataFrame, output_folder: str) -> pd.DataFrame:
             ri = 0
             for df_chunk in tqdm(df_list):
                 #__execute([f'r{ri}', df_chunk])
-                data.append([f'r{ri}', df_chunk, output_folder])
+                data.append([f'c{cj}r{ri}', df_chunk, output_folder])
                 ri += 1
             results = pool.map(__execute, data)
-            
+            cj += 1
             u.dp(['DONE', len(df_list), len(results)])
 
 #og_df = pd.read_parquet('/disk1/share/data/OG/data/train-00000-of-00110.parquet')
@@ -133,16 +134,15 @@ for f in files:
     print(output_folder)
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
-    rows = []
-    # I think chunking is better since we don't need to do this 
-    for s_id, seqs in tqdm(og_df[['id', 'sequence']].values): #og_df[['CDS_ids', 'CDS_seqs']].values):
-        rows.append([f'o{j}', s_id, seqs])
-        #for i, s_id in enumerate(ids):
-        #    rows.append([f'o{j}s{i}', s_id, seqs[i]])
-        j += 1
-    input_df = pd.DataFrame(rows, columns=['id', 'cds_id', 'seq'])
-    # Save first 
-    input_df.to_pickle(f'{output_folder}input_df.pkl')
-    # Save the input df to a file as well since then we can extract this as well 
-    execute(input_df, output_folder)
-    break
+        rows = []
+        # I think chunking is better since we don't need to do this 
+        for s_id, seqs in tqdm(og_df[['id', 'sequence']].values): #og_df[['CDS_ids', 'CDS_seqs']].values):
+            rows.append([f'o{j}', s_id, seqs])
+            #for i, s_id in enumerate(ids):
+            #    rows.append([f'o{j}s{i}', s_id, seqs[i]])
+            j += 1
+        input_df = pd.DataFrame(rows, columns=['id', 'cds_id', 'seq'])
+        # Save first 
+        input_df.to_pickle(f'{output_folder}input_df.pkl')
+        # Save the input df to a file as well since then we can extract this as well 
+        execute(input_df, output_folder)

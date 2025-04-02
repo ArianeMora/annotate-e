@@ -19,21 +19,23 @@
 Author: Ariane Mora
 Date: September 2024
 """
-from enzymetk import *
-import argparse
+import typer
+
+app = typer.Typer()
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Run on a dataframe")
-    parser.add_argument('-out', '--out', required=True, help='Path to the output directory')
-    parser.add_argument('-df', '--df', type=str, required=True, help='Fasta of the file of interest')
-    return parser.parse_args()
+@app.command()
+def hello(name: str):
+    print(f"Hello {name}")
 
 
-def main():
-    args = parse_args()
-    #run(args.out, args.df)
+@app.command()
+def goodbye(name: str, formal: bool = False):
+    if formal:
+        print(f"Goodbye Ms. {name}. Have a good day.")
+    else:
+        print(f"Bye {name}!")
 
 
 if __name__ == "__main__":
-    main()
+    app()
