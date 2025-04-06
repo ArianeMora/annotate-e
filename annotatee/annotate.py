@@ -73,7 +73,7 @@ def run(cmd: list) -> None:
         
         
 def run_blast(run_name, input_df, id_col, seq_col, output_folder, database, run_method, keep_dups,
-             args_blast=None):
+             args_blast=None, num_threads=1):
     """ 
     Annotate sequences using BLAST.
     """
