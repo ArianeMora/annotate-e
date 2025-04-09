@@ -21,7 +21,6 @@ Date: September 2024
 """
 import typer
 import sys
-sys.path.append('/disk1/ariane/vscode/annotate-e/')
 import pandas as pd
 from annotatee import *
 from annotatee.annotate import fasta_to_df, pipeline
@@ -80,4 +79,5 @@ def fasta(query_fasta: Annotated[str, typer.Argument(help="Full path to query fa
 if __name__ == "__main__":
     app()
     
-#annotatee /disk1/ariane/vscode/annotate-e/experiments/degradeo/data/train-00001-of-00032/input_df.csv /disk1/ariane/vscode/annotate-e/experiments/degradeo/Uniprot_reviewed_catalytic_activity_06032025.fasta --methods blast --output-folder /disk1/ariane/vscode/annotate-e/experiments/degradeo/output/ --run-name omgprot50 threads=
+# Example command
+#annotatee input_df.csv Uniprot_reviewed_catalytic_activity_06032025.fasta --methods blast --output-folder output/ --run-name omgprot50
