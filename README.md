@@ -7,7 +7,7 @@ Annotator for enzymes using an ensemble of tools to annoatte function to genes.
 
 ## Install:
 
-``` pip install annotatee```
+``` pip install dist/annotatee```
 
 Note! requires enzymetk to also be installed: [enzymetk](https://github.com/ArianeMora/enzyme-tk).
 
