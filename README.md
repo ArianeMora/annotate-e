@@ -7,9 +7,23 @@ Annotator for enzymes using an ensemble of tools to annoatte function to genes.
 
 ## Install:
 
-``` pip install annotatee```
+``` 
+pip install annotatee
+```
 
-Note! requires enzymetk to also be installed: [enzymetk](https://github.com/ArianeMora/enzyme-tk). `pip install enzymetk`
+### Depending on which/if all tools install each respective tool
+``` 
+source install_scripts/diamond.sh
+source install_scripts/foldseek.sh
+source install_scripts/clean.sh
+source install_scripts/proteinfer.sh
+```
+You'll need to pass the directory of the install for CLEAN and proteInfer to `annotatee`. e.g. `--clean-dir ...../CLEAN/app/`
+
+Note! requires enzymetk to also be installed: [enzymetk](https://github.com/ArianeMora/enzyme-tk). 
+```
+pip install enzymetk
+```
 
 ## Run:
 
