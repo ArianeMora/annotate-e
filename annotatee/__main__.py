@@ -32,6 +32,16 @@ app = typer.Typer()
 
 
 @app.command()
+def install():
+    # Unzip the files from the data folder 
+    pckage_dir = joinpath(dirname(__file__), 'data')
+    os.system(f'unzip {os.path.join(pckage_dir, "CLEAN.zip")}')
+    os.system(f'unzip {os.path.join(pckage_dir, "proteinfer.zip")}')
+    # Also run the install of CLEAN and proteinfer
+    os.chdir(pckage_dir)
+    os.system('./data/install.sh')
+
+@app.command()
 def fasta(query_fasta: Annotated[str, typer.Argument(help="Full path to query fasta or csv (note have simple IDs otherwise we'll remove all funky characters.)")],
           database: Annotated[str, typer.Argument(help="Full path to database fasta (for BLAST and FoldSeek)")], 
           output_folder: Annotated[str, typer.Option(help="Where to store results (full path!)")] = 'Current Directory', 

@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages, Command
 import os
 import re
 
@@ -12,6 +12,24 @@ def read_version():
 def readme():
     with open('README.md') as f:
         return f.read()
+
+
+class CreateInitFile(Command):
+    description = 'create __init__.py file in data directory'
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        init_path = os.path.join('annotatee', 'data', '__init__.py')
+        if not os.path.exists(init_path):
+            with open(init_path, 'w') as f:
+                f.write('# This file is automatically created during installation\n')
+        print(f"Created {init_path}")
 
 
 setup(name='annotatee',
@@ -38,9 +56,12 @@ setup(name='annotatee',
           'Programming Language :: Python :: 3.8',
           'Topic :: Scientific/Engineering :: Bio-Informatics',
       ],
+      cmdclass={
+          'create_init': CreateInitFile,
+      },
       include_package_data=True,
       package_data={
-          'annotatee': ['annotatee/data/*'],
+          'annotatee': ['data/CLEAN.zip', 'data/proteinfer.zip', 'data/install.sh'],
       },
       keywords=['gene-annotation', 'bioinformatics'],
       packages=['annotatee'],
