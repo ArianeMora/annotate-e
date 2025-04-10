@@ -1,0 +1,3 @@
+include anotatee/data/CLEAN.zip
+include anotatee/data/proteinfer.zip
+include anotatee/data/install.sh
