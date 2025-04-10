@@ -29,10 +29,13 @@ pip install enzymetk
 
 ## Setup:
 Download sequences for your database or use ours. 
-e.g. the fasta file from UniProt SwissProt with annotations.
-
-Note you'll also need to setup [proteinfer](https://github.com/google-research/proteinfer)  
-[CLEAN](https://github.com/tttianhao/CLEAN). I'm working on uploading their data automatically - lmk if you need these or have troubles installing them.
+e.g. the fasta file from UniProt SwissProt with annotations. Format:
+```
+>someid1
+MRWQEMGYIF
+>someid2
+MRWQEMGYIF
+```
 
 ## Arguments:
 Pass a fasta file as the database and a fasta file that you seek to search against the database. 
