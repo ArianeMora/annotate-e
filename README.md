@@ -44,7 +44,14 @@ The database will first get searched for existing anontations, and otherwise ML 
 
 Example command:
 ```
-annotatee input_df.csv Uniprot_reviewed_catalytic_activity_06032025.fasta --methods blast --output-folder output/ --run-name omgprot50
+annotatee fasta input_df.csv Uniprot_reviewed_catalytic_activity_06032025.fasta --methods blast --output-folder output/ --run-name omgprot50
+```
+
+### Example caommand passing database to foldseek
+
+```
+annotatee fasta input_df.csv Uniprot_reviewed_catalytic_activity_06032025.fasta --methods blast,foldseek  --foldseek-db foldseek/structures/pdb/pdb --output-folder output/ --run-name omgprot50'
+
 ```
 
 ### Help
