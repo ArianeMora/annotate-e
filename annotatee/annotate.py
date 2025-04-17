@@ -35,7 +35,7 @@ from sciutil import SciUtil
 import subprocess
 import timeit
 import logging
-import subprocess
+
 
 u = SciUtil()
 logger = logging.getLogger(__name__)
