@@ -14,8 +14,10 @@ pip install enzymetk
 ```
 
 ### Depending on which/if all tools install each respective tool
+
+Note you may have issues with dependencies e.g. proteiner requires python 3.7 which needs special channels on mac... 
 ```
-git clone 
+git clone git@github.com:ArianeMora/annotate-e.git
 source install_scripts/diamond.sh
 source install_scripts/foldseek.sh
 source install_scripts/clean.sh
