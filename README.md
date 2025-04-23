@@ -7,12 +7,17 @@ Annotator for enzymes using an ensemble of tools to annoatte function to genes.
 
 ## Install:
 
-``` 
+```
+conda create --name annotatee python=3.11
 pip install annotatee
+pip install enzymetk
 ```
 
 ### Depending on which/if all tools install each respective tool
-``` 
+
+Note you may have issues with dependencies e.g. proteiner requires python 3.7 which needs special channels on mac... 
+```
+git clone git@github.com:ArianeMora/annotate-e.git
 source install_scripts/diamond.sh
 source install_scripts/foldseek.sh
 source install_scripts/clean.sh
