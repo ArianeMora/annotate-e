@@ -25,7 +25,6 @@ import pandas as pd
 import re
 
 import sys
-sys.path.append('/disk1/ariane/vscode/enzyme-tk/')
 import os
 from enzymetk.sequence_search_blast import BLAST
 from enzymetk.similarity_foldseek_step import FoldSeek
