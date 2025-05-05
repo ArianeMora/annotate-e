@@ -57,7 +57,10 @@ def fasta(query_fasta: Annotated[str, typer.Argument(help="Full path to query fa
           methods: Annotated[str, typer.Option(help="comma separated list (no spaces) of methods to run (e.g. could just pass ['foldseek', 'proteinfer']) to pass to CLEAN")] = '',
           foldseek_db: Annotated[str, typer.Option(help="Database for foldseek to override fasta before (e.g. path to all pdbs as per foldseek docs.)")] = '',
           id_col: Annotated[str, typer.Option(help="id column in df if df passed (csv) rather than fasta")] = 'id',
-          seq_col: Annotated[str, typer.Option(help="Database for foldseek to override fasta before (e.g. path to all pdbs as per foldseek docs.)")] = 'seq'):
+          seq_col: Annotated[str, typer.Option(help="Database for foldseek to override fasta before (e.g. path to all pdbs as per foldseek docs.)")] = 'seq', 
+          #tmp_dir: Annotated[str, typer.Option(help="Database for foldseek to override fasta before (e.g. path to all pdbs as per foldseek docs.)")] = 'seq', 
+
+          ):
 
     """ 
     Find similar proteins based on sequence or structural identity in order to annotate these using 

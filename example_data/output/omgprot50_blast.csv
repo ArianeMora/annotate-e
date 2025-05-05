@@ -1,0 +1,5 @@
+query,target,sequence identity,length,mismatch,gapopen,query start,query end,target start,target end,e-value,bitscore,annotation
+Q196W5,spQ196W5095LIIV3,100.0,363,0,0,1,363,1,363,1.9e-261,707.0,BLAST
+Q6GZN0,spQ6GZN0095RFRG3G,100.0,363,0,0,1,363,1,363,5.3e-268,724.0,BLAST
+P0DO85,spP0DO8510HSTRNX,100.0,524,0,0,1,524,1,524,0.0,1043.0,BLAST
+Q6V4H0,spQ6V4H010HGOCATRO,100.0,360,0,0,1,360,1,360,3.0799999999999996e-270,729.0,BLAST

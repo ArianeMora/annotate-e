@@ -60,9 +60,9 @@ setup(name='annotatee',
           'create_init': CreateInitFile,
       },
       include_package_data=True,
-      package_data={
-          'annotatee': ['data/CLEAN.zip', 'data/proteinfer.zip', 'data/install.sh'],
-      },
+    #   package_data={
+    #       'annotatee': ['data/CLEAN.zip', 'data/proteinfer.zip', 'data/install.sh'],
+    #   },
       keywords=['gene-annotation', 'bioinformatics'],
       packages=['annotatee'],
       entry_points={
