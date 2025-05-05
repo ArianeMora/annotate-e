@@ -11,29 +11,14 @@ Annotator for enzymes using an ensemble of tools to annoatte function to genes.
 conda create --name annotatee python=3.11
 pip install annotatee
 pip install enzymetk
-```
-
-### Depending on which/if all tools install each respective tool
-
-Note you may have issues with dependencies e.g. proteiner requires python 3.7 which needs special channels on mac... 
-```
-git clone git@github.com:ArianeMora/annotate-e.git
-source install_scripts/diamond.sh
-source install_scripts/foldseek.sh
-source install_scripts/clean.sh
-source install_scripts/proteinfer.sh
-```
-You'll need to pass the directory of the install for CLEAN and proteInfer to `annotatee`. e.g. `--clean-dir ...../CLEAN/app/`
-
-Note! requires enzymetk to also be installed: [enzymetk](https://github.com/ArianeMora/enzyme-tk). 
-```
-pip install enzymetk
+conda install -c bioconda -c conda-forge diamond
+conda install -c conda-forge -c bioconda foldseek
 ```
 
 ## Run:
 
 ## Setup:
-Download sequences for your database or use ours. 
+Download sequences for your database (e.g. swissprot as a fasta file)
 e.g. the fasta file from UniProt SwissProt with annotations. Format:
 ```
 >someid1
@@ -49,15 +34,39 @@ The database will first get searched for existing anontations, and otherwise ML 
 
 Example command:
 ```
-annotatee fasta input_df.csv Uniprot_reviewed_catalytic_activity_06032025.fasta --methods blast --output-folder output/ --run-name omgprot50
+ annotatee fasta query.fasta ref.fasta --methods blast,foldseek --run-name example_output
 ```
 
-### Example caommand passing database to foldseek
+(see example fasta files in the `example_data` folder, run the above command with them!)
+
+### Example command passing database to foldseek
 
 ```
-annotatee fasta input_df.csv Uniprot_reviewed_catalytic_activity_06032025.fasta --methods blast,foldseek  --foldseek-db foldseek/structures/pdb/pdb --output-folder output/ --run-name omgprot50'
+annotatee fasta input_df.csv Uniprot_reviewed_catalytic_activity_06032025.fasta --methods blast,foldseek  --foldseek-db foldseek/structures/pdb/pdb --output-folder output/ --run-name omgprot50
 
 ```
+
+### Depending on which/if all tools install each respective tool
+
+Note you may have issues with dependencies e.g. proteiner requires python 3.7 which needs special channels on mac... these ones don't work as easily...
+```
+git clone git@github.com:ArianeMora/annotate-e.git
+source install_scripts/clean.sh
+source install_scripts/proteinfer.sh
+```
+
+You'll need to pass the directory of the install for CLEAN and proteInfer to `annotatee`. e.g. `--clean-dir ...../CLEAN/app/`
+
+Note! requires enzymetk to also be installed: [enzymetk](https://github.com/ArianeMora/enzyme-tk). 
+```
+pip install enzymetk
+```
+
+For now to run with CLEAN and proteInfer please follow their instructions respectfully (I will make this simpler when I can do a data drop on Zenodo - if you want to use our versions, please email or post an `issue`).
+
+[Install Proteiner](https://github.com/google-research/proteinfer) and [Install CLEAN](https://github.com/tttianhao/CLEAN)
+
+
 
 ### Help
 

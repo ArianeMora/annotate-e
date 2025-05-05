@@ -76,7 +76,7 @@ def run_blast(run_name, input_df, id_col, seq_col, output_folder, database, run_
     """ 
     Annotate sequences using BLAST.
     """
-    blast_df = (input_df << (BLAST(id_col, seq_col, database=database, args=args_blast, num_threads=20, tmp_dir='/disk1/ariane/vscode/annotate-e/experiments/degradeo/tmp/')))
+    blast_df = (input_df << (BLAST(id_col, seq_col, database=database, args=args_blast))) #, num_threads=20, tmp_dir='/disk1/ariane/vscode/annotate-e/experiments/degradeo/tmp/')))
     # After this we summarize the BLAST file
     blast_df.sort_values(by='sequence identity', ascending=False, inplace=True)
     if not keep_dups:
@@ -138,7 +138,7 @@ def run_foldseek(run_name: str, input_df: pd.DataFrame, id_col: str, seq_col: st
         run(cmd)
         database = os.path.join(db_path, f'db_{run_name}')
     # Run foldseek
-    foldseek_df = (input_df << (FoldSeek(id_col, seq_col, database, query_type='seqs', num_threads=20, tmp_dir='/disk1/ariane/vscode/annotate-e/experiments/degradeo/tmp/', args=args_foldseek)))
+    foldseek_df = (input_df << (FoldSeek(id_col, seq_col, database, query_type='seqs', args=args_foldseek))) #, num_threads=20, tmp_dir='/disk1/ariane/vscode/annotate-e/experiments/degradeo/tmp/', args=args_foldseek)))
     foldseek_df.sort_values(by='fident', ascending=False, inplace=True)
     # Change back 
     if not keep_dups:
